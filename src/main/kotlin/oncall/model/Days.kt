@@ -11,5 +11,16 @@ enum class Days(private val koValue: String) {
 
     companion object {
         fun toDay(p: String): Days? = Days.entries.find { it.koValue == p }
+
+        fun Days.isHoliday(): Boolean = when (this) {
+            SATURDAY, SUNDAY -> true
+            else -> false
+        }
+
+        fun Days.nextDay(): Days {
+            val index = Days.entries.indexOf(this).let { if(it == -1) 0 else it }
+            val nextIndex = if(index + 1 > Days.entries.size - 1) 0 else index + 1
+            return Days.entries[nextIndex]
+        }
     }
 }
