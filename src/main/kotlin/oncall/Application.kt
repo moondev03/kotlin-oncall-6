@@ -1,5 +1,12 @@
 package oncall
 
+import oncall.controller.MainController
+import oncall.view.InputView
+import oncall.view.OutputView
+
 fun main() {
-    TODO("프로그램 구현")
+    MainController(
+        inputView = InputView(),
+        outputView = OutputView()
+    ).serviceStart()
 }
