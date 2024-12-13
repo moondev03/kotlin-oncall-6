@@ -37,6 +37,7 @@ class MainController(
         retryOnException {
             val input = inputView.inputHolidayWorkOrder()
             onCall.inputToHolidayWorkOrder(input)
+            onCall.validateWorker()
         }
     }
 
@@ -44,7 +45,8 @@ class MainController(
         retryOnException(
             action = action,
             onException = { exception ->
-                outputView.printErrorMessage(exception.message ?: INVALID_INPUT_EXCEPTION.message)
+                val message = exception.message.toString()
+                outputView.printErrorMessage(message.ifBlank { INVALID_INPUT_EXCEPTION.message })
             }
         )
     }

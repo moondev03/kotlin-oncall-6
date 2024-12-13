@@ -1,5 +1,6 @@
 package oncall.model
 
+import oncall.model.Days.Companion.isHoliday
 import oncall.utils.OnCallException.INVALID_INPUT_DAY_EXCEPTION
 import oncall.utils.OnCallException.INVALID_INPUT_MONTH_EXCEPTION
 
@@ -13,7 +14,7 @@ class OnCall {
 
     fun inputToTarget(input: String) {
         val splitInput = input.split(DELIMITER).map { it.trim() }
-        require(splitInput.size == 2)
+        require(splitInput.size == 2) { "" }
 
         setTargetMonth(splitInput[0])
         setTargetDay(splitInput[1])
@@ -50,7 +51,11 @@ class OnCall {
 
     private fun validateWorkOrder(workOrder: List<String>) {
         require(workOrder.size in 5..35) { "근무자는 최소 5명, 최대 35명입니다." }
-        require(workOrder.all { it.length in 1..5 }) { "근무자 닉네임은 최대 5글자입니다. "}
+        require(workOrder.all { it.length in 1..5 }) { "근무자 닉네임은 최대 5글자입니다. " }
+    }
+
+    fun validateWorker(){
+        require(weekdayWorkOrder.sorted() == holidayWorkOrder.sorted()) { "비상 근무자는 평일 순번, 휴일 순번에 각각 1회 편성되어야 합니다." }
     }
 
     companion object {
