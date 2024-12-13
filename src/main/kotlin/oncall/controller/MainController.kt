@@ -15,7 +15,7 @@ class MainController(
     fun serviceStart() {
         doInputWeekDayAndDays()
         doInputWeekDayWorkOrder()
-        doInputWeekDayWorkOrder()
+        doInputHolidayWorkOrder()
     }
 
     private fun doInputWeekDayAndDays() {
@@ -29,12 +29,14 @@ class MainController(
     private fun doInputWeekDayWorkOrder() {
         retryOnException {
             val input = inputView.inputWeekDayWorkOrder()
+            onCall.inputToWeekdayWorkOrder(input)
         }
     }
 
     private fun doInputHolidayWorkOrder() {
         retryOnException {
             val input = inputView.inputHolidayWorkOrder()
+            onCall.inputToHolidayWorkOrder(input)
         }
     }
 

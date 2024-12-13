@@ -18,7 +18,7 @@ class InputView {
     }
 
     fun inputHolidayWorkOrder(): String {
-        println(INPUT_HOLIDAY_SEQUENCE_MESSAGE)
+        print(INPUT_HOLIDAY_SEQUENCE_MESSAGE)
         return Console.readLine()
     }
 }

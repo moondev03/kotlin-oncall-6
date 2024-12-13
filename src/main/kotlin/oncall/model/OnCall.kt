@@ -8,6 +8,8 @@ class OnCall {
     private var targetMonth: Int = 0
     private lateinit var targetDay: Days
     private lateinit var workSchedule: WorkSchedule
+    private var weekdayWorkOrder = listOf<String>()
+    private var holidayWorkOrder = listOf<String>()
 
     fun inputToTarget(input: String) {
         val splitInput = input.split(DELIMITER).map { it.trim() }
@@ -32,6 +34,23 @@ class OnCall {
 
     fun createWorkSchedule() {
         workSchedule = WorkSchedule(targetMonth, targetDay)
+    }
+
+    fun inputToWeekdayWorkOrder(input: String) {
+        val splitInput = input.split(DELIMITER).map { it.trim() }
+        validateWorkOrder(splitInput)
+        weekdayWorkOrder = splitInput
+    }
+
+    fun inputToHolidayWorkOrder(input: String) {
+        val splitInput = input.split(DELIMITER).map { it.trim() }
+        validateWorkOrder(splitInput)
+        holidayWorkOrder = splitInput
+    }
+
+    private fun validateWorkOrder(workOrder: List<String>) {
+        require(workOrder.size in 5..35) { "근무자는 최소 5명, 최대 35명입니다." }
+        require(workOrder.all { it.length in 1..5 }) { "근무자 닉네임은 최대 5글자입니다. "}
     }
 
     companion object {
