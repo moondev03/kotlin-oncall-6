@@ -41,17 +41,20 @@ class WorkSchedule(month: Int, day: Days) {
         repeat(schedules.size - 1) { i ->
             val schedule = schedules[i]
             val nextSchedule = schedules[i + 1]
+            val changeSchedule = if(schedules.size >= i + 2) schedules[i + 2] else null
 
             if (schedule.worker == nextSchedule.worker) {
-                val nextWorker: String = if (nextSchedule.isHoliday) {
-                    holidayWorkOrder.indexOf(nextSchedule.worker)
+                if (nextSchedule.isHoliday) {
+                    val nextWorker = holidayWorkOrder.indexOf(nextSchedule.worker)
                         .let { holidayWorkOrder[if (holidayWorkOrder.size >= it + 1) it + 1 else 0] }
+                    changeSchedule?.setWorkerName(nextSchedule.worker ?: "")
+                    nextSchedule.setWorkerName(nextWorker)
                 } else {
-                    weekdayWorkOrder.indexOf(nextSchedule.worker)
+                    val nextWorker = weekdayWorkOrder.indexOf(nextSchedule.worker)
                         .let { weekdayWorkOrder[if (weekdayWorkOrder.size >= it + 1) it + 1 else 0] }
+                    changeSchedule?.setWorkerName(nextSchedule.worker ?: "")
+                    nextSchedule.setWorkerName(nextWorker)
                 }
-
-                nextSchedule.setWorkerName(nextWorker)
             }
         }
     }
