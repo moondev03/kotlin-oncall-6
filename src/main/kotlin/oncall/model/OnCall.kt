@@ -52,13 +52,31 @@ class OnCall {
     private fun validateWorkOrder(workOrder: List<String>) {
         require(workOrder.size in 5..35) { "근무자는 최소 5명, 최대 35명입니다." }
         require(workOrder.all { it.length in 1..5 }) { "근무자 닉네임은 최대 5글자입니다. " }
+        require(workOrder.distinct().size == workOrder.size) { "각 근무자 닉네임은 유일해야 합니다." }
     }
 
     fun validateWorker(){
         require(weekdayWorkOrder.sorted() == holidayWorkOrder.sorted()) { "비상 근무자는 평일 순번, 휴일 순번에 각각 1회 편성되어야 합니다." }
     }
 
+    fun addWorkerToSchedule() {
+        workSchedule.addWorkerToSchedule(weekdayWorkOrder, holidayWorkOrder)
+        workSchedule.fixScheduleOrder(weekdayWorkOrder, holidayWorkOrder)
+    }
+
+    fun getWorkScheduleResult(): List<String> =
+        workSchedule.getWorkSchedule().map { schedule ->
+            SCHEDULE_PRINT_FORMAT.format(
+                schedule.month,
+                schedule.date,
+                schedule.day.koValue + if(schedule.isHoliday && !schedule.day.isHoliday()) "(휴일)" else "",
+                schedule.worker
+            )
+        }
+
+
     companion object {
         private const val DELIMITER = ","
+        private const val SCHEDULE_PRINT_FORMAT = "%s월 %s일 %s %s"
     }
 }

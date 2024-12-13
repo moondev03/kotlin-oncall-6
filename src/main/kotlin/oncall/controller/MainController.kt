@@ -16,6 +16,8 @@ class MainController(
         doInputWeekDayAndDays()
         doInputWeekDayWorkOrder()
         doInputHolidayWorkOrder()
+        onCall.addWorkerToSchedule()
+        printWorkSchedule()
     }
 
     private fun doInputWeekDayAndDays() {
@@ -39,6 +41,11 @@ class MainController(
             onCall.inputToHolidayWorkOrder(input)
             onCall.validateWorker()
         }
+    }
+
+    private fun printWorkSchedule() {
+        val workSchedule = onCall.getWorkScheduleResult()
+        outputView.printResult(workSchedule)
     }
 
     private fun <T> retryOnException(action: () -> T) {

@@ -1,6 +1,6 @@
 package oncall.model
 
-enum class Days(private val koValue: String) {
+enum class Days(val koValue: String) {
     MONDAY("월"),
     TUESDAY("화"),
     WEDNESDAY("수"),
