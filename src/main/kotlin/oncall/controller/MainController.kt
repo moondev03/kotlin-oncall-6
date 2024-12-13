@@ -1,5 +1,7 @@
 package oncall.controller
 
+import oncall.model.OnCall
+import oncall.utils.OnCallException.INVALID_INPUT_EXCEPTION
 import oncall.utils.retryOnException
 import oncall.view.InputView
 import oncall.view.OutputView
@@ -7,6 +9,7 @@ import oncall.view.OutputView
 class MainController(
     private val inputView: InputView,
     private val outputView: OutputView,
+    private val onCall: OnCall
 ) {
 
     fun serviceStart() {
@@ -18,6 +21,8 @@ class MainController(
     private fun doInputWeekDayAndDays() {
         retryOnException {
             val input = inputView.inputTargetMonthAndDays()
+            onCall.inputToTarget(input)
+            onCall.createWorkSchedule()
         }
     }
 
@@ -36,7 +41,9 @@ class MainController(
     private fun <T> retryOnException(action: () -> T) {
         retryOnException(
             action = action,
-            onException = { exception -> outputView.printErrorMessage(exception.message.toString()) }
+            onException = { exception ->
+                outputView.printErrorMessage(exception.message ?: INVALID_INPUT_EXCEPTION.message)
+            }
         )
     }
 }
